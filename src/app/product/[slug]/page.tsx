@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 
 import { ProductGallery } from '@/components/catalog/product-gallery';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { AddToCartButton } from '@/components/cart/add-to-cart-button';
 import { getProduct } from '@/lib/catalog';
 import { formatPaise } from '@/lib/money';
 
@@ -124,15 +124,12 @@ export default async function Page({ params }: { params: Params }) {
             </div>
           )}
 
-          {/* Honest about not being ready: a button that looks live and does
-              nothing is worse than one that says so. Cart arrives in Phase 4. */}
           <div className="space-y-2">
-            <Button size="lg" className="w-full sm:w-auto" disabled>
-              {product.inStock ? 'Add to cart — coming soon' : 'Out of stock'}
-            </Button>
-            {product.inStock && (
-              <p className="text-sm text-muted">Online ordering opens shortly.</p>
-            )}
+            <AddToCartButton
+              productId={product._id}
+              title={product.title}
+              inStock={product.inStock}
+            />
           </div>
 
           <div className="flex flex-wrap gap-4 border-t border-line pt-4 text-sm text-muted">

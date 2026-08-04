@@ -4,6 +4,7 @@ import { Search, ShoppingBag, User } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { useCart } from '@/components/cart/cart-provider';
 import { MobileNav } from '@/components/layout/mobile-nav';
 import { Input } from '@/components/ui/input';
 import type { Category } from '@/lib/types';
@@ -33,15 +34,16 @@ function SearchForm({ className }: { className?: string }) {
 export function Header({ categories }: { categories: Category[] }) {
   const [searchOpen, setSearchOpen] = useState(false);
 
+  const { itemCount, isReady } = useCart();
+
   /**
-   * null until the cart is real (Phase 4), not 0.
+   * Still null until localStorage has actually been read — not 0.
    *
-   * The count will come from localStorage, which the server cannot see. If the
-   * server rendered a 0 and the browser then rendered a 3, React would report
-   * a hydration mismatch. Rendering no badge at all until there is a number
-   * avoids inventing one.
+   * The count lives in localStorage, which the server cannot see. If the server
+   * rendered a 0 and the browser then rendered a 3, React would report a
+   * hydration mismatch. No badge at all until there is a real number.
    */
-  const cartCount: number | null = null;
+  const cartCount: number | null = isReady && itemCount > 0 ? itemCount : null;
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur">

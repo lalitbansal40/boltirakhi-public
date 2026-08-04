@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 
+import { CartProvider } from "@/components/cart/cart-provider";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { Toaster } from "@/components/ui/sonner";
@@ -59,11 +60,17 @@ export default async function RootLayout({
       {/* dvh, not vh — mobile browsers measure vh against a chrome that is not
           there, leaving a gap under the footer. */}
       <body className="flex min-h-dvh flex-col">
-        <Header categories={categories} />
-        {/* flex-1 is what keeps the footer at the bottom on short pages. */}
-        <main className="flex-1">{children}</main>
-        <Footer categories={categories} />
-        <Toaster />
+        {/* The provider is a client component wrapping server-rendered
+            children. This layout stays a server component — marking it
+            'use client' would take the whole site's SSR with it, and that
+            SSR is the entire reason the catalogue is indexable. */}
+        <CartProvider>
+          <Header categories={categories} />
+          {/* flex-1 is what keeps the footer at the bottom on short pages. */}
+          <main className="flex-1">{children}</main>
+          <Footer categories={categories} />
+          <Toaster />
+        </CartProvider>
       </body>
     </html>
   );
