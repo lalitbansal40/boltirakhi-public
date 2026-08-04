@@ -1,26 +1,85 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/**
+ * Rakhi is a festival, so the storefront reads like one — deep maroon for the
+ * thread, gold for highlights, cream paper underneath. The admin panel's greys
+ * belong to a tool; this is a shop.
+ *
+ * Tailwind 4 keeps the theme here in CSS, not in tailwind.config.js. The v3
+ * approach silently does nothing.
+ *
+ * No dark mode: it would double every design decision for a site that is open
+ * for one season.
+ */
+@theme {
+  /* Brand */
+  --color-brand: #8e1b3a; /* the rakhi thread — CTAs, headings */
+  --color-brand-hover: #741630;
+  --color-brand-fg: #fdf8f0;
+
+  /* Gold. Backgrounds, borders and badges only — as text on cream it fails
+     contrast and simply cannot be read. */
+  --color-accent: #c9a227;
+  --color-accent-soft: #f5e6b8;
+
+  /* Surfaces */
+  --color-bg: #fdf8f0; /* cream page */
+  --color-surface: #ffffff; /* cards */
+  --color-line: #e8dccb; /* hairlines that show on cream */
+
+  /* Text */
+  --color-ink: #2a1f1d;
+  --color-muted: #6b5d58;
+
+  --color-success: #1f7a4d;
+  --color-danger: #b3261e;
+
+  /* Wired to next/font variables in layout.tsx */
+  --font-heading: var(--font-heading-family), Georgia, serif;
+  --font-sans: var(--font-body-family), system-ui, sans-serif;
+
+  --radius-card: 0.875rem;
 }
 
+/**
+ * shadcn's components are written against its own token names. Pointing those
+ * at the brand palette keeps one source of truth — otherwise the buttons drift
+ * grey while everything around them is maroon.
+ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-ink);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary: var(--color-brand);
+  --color-primary-foreground: var(--color-brand-fg);
+
+  --color-secondary: var(--color-accent-soft);
+  --color-secondary-foreground: var(--color-ink);
+
+  --color-card: var(--color-surface);
+  --color-card-foreground: var(--color-ink);
+
+  --color-popover: var(--color-surface);
+  --color-popover-foreground: var(--color-ink);
+
+  --color-muted-foreground: var(--color-muted);
+
+  --color-destructive: var(--color-danger);
+  --color-destructive-foreground: var(--color-brand-fg);
+
+  --color-border: var(--color-line);
+  --color-input: var(--color-line);
+  --color-ring: var(--color-brand);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
 }
