@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { MobileNav } from '@/components/layout/mobile-nav';
 import { Input } from '@/components/ui/input';
-import { NAV_CATEGORIES } from '@/lib/placeholder';
+import type { Category } from '@/lib/types';
 
 function SearchForm({ className }: { className?: string }) {
   return (
@@ -30,7 +30,7 @@ function SearchForm({ className }: { className?: string }) {
   );
 }
 
-export function Header() {
+export function Header({ categories }: { categories: Category[] }) {
   const [searchOpen, setSearchOpen] = useState(false);
 
   /**
@@ -46,7 +46,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-surface/95 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-3 px-4">
-        <MobileNav />
+        <MobileNav categories={categories} />
 
         <Link
           href="/"
@@ -57,8 +57,8 @@ export function Header() {
 
         <nav aria-label="Categories" className="ml-6 hidden lg:block">
           <ul className="flex items-center gap-5 text-sm">
-            {NAV_CATEGORIES.map((category) => (
-              <li key={category.slug}>
+            {categories.map((category) => (
+              <li key={category._id}>
                 {/* A nav link is a link, not a button. */}
                 <Link
                   href={`/rakhi/${category.slug}`}

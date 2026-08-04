@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { NAV_CATEGORIES } from '@/lib/placeholder';
+import type { Category } from '@/lib/types';
 
 const HELP_LINKS = [
   { label: 'Shipping', href: '/shipping' },
@@ -21,7 +21,7 @@ const LEGAL_LINKS = [
   { label: 'Refund Policy', href: '/refunds' },
 ];
 
-export function Footer() {
+export function Footer({ categories }: { categories: Category[] }) {
   return (
     <footer className="border-t border-line bg-surface">
       <div className="mx-auto w-full max-w-6xl px-4 py-10">
@@ -37,8 +37,8 @@ export function Footer() {
           <div>
             <p className="text-sm font-semibold text-ink">Shop</p>
             <ul className="mt-3 space-y-2 text-sm">
-              {NAV_CATEGORIES.map((category) => (
-                <li key={category.slug}>
+              {categories.map((category) => (
+                <li key={category._id}>
                   <Link
                     href={`/rakhi/${category.slug}`}
                     className="text-muted transition-colors hover:text-brand"

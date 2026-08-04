@@ -41,8 +41,40 @@ export default async function Page({ params }: { params: Params }) {
 
   const category = typeof product.categoryId === 'string' ? null : product.categoryId;
 
+  /**
+   * Structured data, which is what puts a price and an availability badge
+   * under the result in Google rather than a bare blue link.
+   *
+   * ⚠️ The price here is in RUPEES, not paise — schema.org expects a decimal
+   * amount, and 49900 would advertise this at forty-nine thousand rupees.
+   * This is the one place in the codebase where dividing by 100 is correct.
+   */
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: product.shortDescription ?? product.description,
+    image: product.images.map((image) => image.url),
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'INR',
+      price: (product.pricePaise / 100).toFixed(2),
+      availability: product.inStock
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
+      url: `https://boltirakhi.com/product/${product.slug}`,
+    },
+  };
+
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8">
+      <script
+        type="application/ld+json"
+        // The object is built here from our own data, so there is nothing
+        // user-supplied to escape.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <div className="grid gap-8 lg:grid-cols-2">
         <ProductGallery images={product.images} video={product.video} title={product.title} />
 

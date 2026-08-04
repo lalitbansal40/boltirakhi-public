@@ -4,6 +4,7 @@ import { Fraunces, Inter } from "next/font/google";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { Toaster } from "@/components/ui/sonner";
+import { getCategories } from "@/lib/catalog";
 import "./globals.css";
 
 /**
@@ -36,11 +37,20 @@ export const metadata: Metadata = {
     "Send a rakhi with a video message your brother can scan and watch. Rakhi sets, combos and chocolates, delivered across India.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  /**
+   * Fetched here and passed down, because Header is a client component and a
+   * client component cannot fetch on the server.
+   *
+   * The `?? []` matters more than it looks: this runs on every page, so an
+   * unguarded failure here would take the whole site down rather than one
+   * section of one page. An empty nav is survivable; a blank site is not.
+   */
+  const categories = (await getCategories().catch(() => null)) ?? [];
   return (
     <html
       lang="en"
@@ -49,10 +59,10 @@ export default function RootLayout({
       {/* dvh, not vh — mobile browsers measure vh against a chrome that is not
           there, leaving a gap under the footer. */}
       <body className="flex min-h-dvh flex-col">
-        <Header />
+        <Header categories={categories} />
         {/* flex-1 is what keeps the footer at the bottom on short pages. */}
         <main className="flex-1">{children}</main>
-        <Footer />
+        <Footer categories={categories} />
         <Toaster />
       </body>
     </html>

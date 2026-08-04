@@ -11,9 +11,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { NAV_CATEGORIES } from '@/lib/placeholder';
+import type { Category } from '@/lib/types';
 
-export function MobileNav() {
+export function MobileNav({ categories }: { categories: Category[] }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -37,8 +37,8 @@ export function MobileNav() {
 
         <nav aria-label="Categories" className="mt-4 px-4">
           <ul className="space-y-1">
-            {NAV_CATEGORIES.map((category) => (
-              <li key={category.slug}>
+            {categories.map((category) => (
+              <li key={category._id}>
                 <Link
                   href={`/rakhi/${category.slug}`}
                   // Closing on tap: without this the drawer stays open over the
