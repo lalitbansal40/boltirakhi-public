@@ -4,8 +4,7 @@ import Link from 'next/link';
 import { FestiveRain } from '@/components/home/festive-rain';
 import { ProductCard } from '@/components/shared/product-card';
 import { Button } from '@/components/ui/button';
-import { NAV_CATEGORIES } from '@/lib/placeholder';
-import type { Product } from '@/lib/types';
+import type { Category, Product } from '@/lib/types';
 
 type CardProduct = Pick<
   Product,
@@ -65,13 +64,13 @@ export function Hero() {
   );
 }
 
-export function CategoryTiles() {
+export function CategoryTiles({ categories }: { categories: Category[] }) {
   return (
     <Section title="Shop by category">
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {NAV_CATEGORIES.map((category) => (
+        {categories.map((category) => (
           <Link
-            key={category.slug}
+            key={category._id}
             href={`/rakhi/${category.slug}`}
             className="rounded-[var(--radius-card)] border border-line bg-surface p-6 text-center transition-shadow hover:shadow-md"
           >

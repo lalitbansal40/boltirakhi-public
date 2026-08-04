@@ -57,8 +57,12 @@ export const API_ERROR = {
 
 // ---- catalogue ----
 
+/**
+ * No `key`. The storage key is internal and the public API strips it — a URL
+ * is all a browser needs, and a field in the type is a field somebody
+ * eventually reads and finds undefined.
+ */
 export interface StoredImage {
-  key: string;
   url: string;
   alt?: string;
 }
@@ -103,6 +107,8 @@ export interface Category {
   slug: string;
   image?: StoredImage;
   description?: string;
+  /** Active products in this category — sent by the list endpoint only. */
+  productCount?: number;
   tags?: string[];
   metaTitle?: string;
   metaDescription?: string;
