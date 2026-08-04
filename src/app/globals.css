@@ -83,3 +83,32 @@ h2,
 h3 {
   font-family: var(--font-heading);
 }
+
+/**
+ * Festive shower. CSS keyframes rather than a JS animation loop —
+ * requestAnimationFrame running twenty particles warms up a cheap phone, and
+ * this is decoration.
+ */
+@keyframes festive-fall {
+  from {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.85;
+  }
+  to {
+    transform: translate3d(1.5rem, 110vh, 0) rotate(220deg);
+    opacity: 0;
+  }
+}
+
+.festive-particle {
+  animation-name: festive-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
