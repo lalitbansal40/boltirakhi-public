@@ -4,6 +4,7 @@ import { Search, ShoppingBag, User } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { useAuth } from '@/components/auth/auth-provider';
 import { useCart } from '@/components/cart/cart-provider';
 import { MobileNav } from '@/components/layout/mobile-nav';
 import { Input } from '@/components/ui/input';
@@ -35,6 +36,7 @@ export function Header({ categories }: { categories: Category[] }) {
   const [searchOpen, setSearchOpen] = useState(false);
 
   const { itemCount, isReady } = useCart();
+  const { isSignedIn } = useAuth();
 
   /**
    * Still null until localStorage has actually been read — not 0.
@@ -101,9 +103,12 @@ export function Header({ categories }: { categories: Category[] }) {
             )}
           </Link>
 
+          {/* Points at the account once there is one to point at. Until the
+              session check comes back it stays on /login rather than flickering
+              between the two on every page load. */}
           <Link
-            href="/login"
-            aria-label="Account"
+            href={isSignedIn ? '/account' : '/login'}
+            aria-label={isSignedIn ? 'Your account' : 'Sign in'}
             className="rounded-md p-2 text-ink hover:bg-accent-soft"
           >
             <User className="size-5" aria-hidden />

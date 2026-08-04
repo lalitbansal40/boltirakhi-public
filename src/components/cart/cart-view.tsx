@@ -3,8 +3,10 @@
 import { AlertTriangle, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { useAuth } from '@/components/auth/auth-provider';
 import { useCart } from '@/components/cart/cart-provider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -37,6 +39,8 @@ export function CartView({ categories }: { categories: Category[] }) {
   } = useCart();
 
   const [couponInput, setCouponInput] = useState('');
+  const { isSignedIn } = useAuth();
+  const router = useRouter();
 
   // Until localStorage has been read the cart is empty because nothing has
   // loaded, not because it is empty. Saying "your cart is empty" here would be
@@ -240,12 +244,21 @@ export function CartView({ categories }: { categories: Category[] }) {
                 // Blocked here rather than at checkout, where the failure would
                 // come back as a rejection with no explanation attached to it.
                 disabled={hasBlockedLine || isPricing}
+                onClick={() => {
+                  // Signed out, so sign in first — and come back here, not to
+                  // the home page. Losing someone's place at the moment they
+                  // decided to buy is the most expensive place to lose them.
+                  if (!isSignedIn) router.push('/login?next=/cart');
+                  else router.push('/checkout');
+                }}
               >
                 {hasBlockedLine ? 'Fix the items above' : 'Proceed to checkout'}
               </Button>
 
               <p className="mt-2 text-center text-xs text-muted">
-                Sign-in and payment arrive in the next step.
+                {isSignedIn
+                  ? 'Payment arrives in the next step.'
+                  : 'You will sign in with your mobile number.'}
               </p>
             </>
           )}
