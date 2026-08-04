@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
+
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 /**
@@ -44,7 +48,13 @@ export default function RootLayout({
     >
       {/* dvh, not vh — mobile browsers measure vh against a chrome that is not
           there, leaving a gap under the footer. */}
-      <body className="flex min-h-dvh flex-col">{children}</body>
+      <body className="flex min-h-dvh flex-col">
+        <Header />
+        {/* flex-1 is what keeps the footer at the bottom on short pages. */}
+        <main className="flex-1">{children}</main>
+        <Footer />
+        <Toaster />
+      </body>
     </html>
   );
 }
