@@ -10,13 +10,9 @@ import { NAV_CATEGORIES } from '@/lib/placeholder';
 
 function SearchForm({ className }: { className?: string }) {
   return (
-    <form
-      role="search"
-      className={className}
-      // Wired up in Phase 2. Submitting now would navigate to a route that
-      // does not exist yet.
-      onSubmit={(event) => event.preventDefault()}
-    >
+    // A plain GET form, so search works before any JavaScript has loaded —
+    // which on a slow phone is the first few seconds of every visit.
+    <form role="search" action="/search" method="get" className={className}>
       <div className="relative">
         <Search
           className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted"
@@ -24,6 +20,7 @@ function SearchForm({ className }: { className?: string }) {
         />
         <Input
           type="search"
+          name="q"
           placeholder="Search rakhi, combos, chocolates…"
           aria-label="Search products"
           className="pl-9"
