@@ -1,8 +1,18 @@
 import Link from 'next/link';
 
+import {
+  ADDRESS_LINES,
+  GST_NUMBER,
+  LEGAL_NAME,
+  SUPPORT_EMAIL,
+  SUPPORT_EMAIL_HREF,
+  SUPPORT_PHONE_DISPLAY,
+  SUPPORT_PHONE_HREF,
+} from '@/lib/business';
 import type { Category } from '@/lib/types';
 
 const HELP_LINKS = [
+  { label: 'All rakhis', href: '/rakhi' },
   { label: 'Shipping', href: '/shipping' },
   { label: 'Returns', href: '/returns' },
   { label: 'Contact', href: '/contact' },
@@ -27,11 +37,37 @@ export function Footer({ categories }: { categories: Category[] }) {
       <div className="mx-auto w-full max-w-6xl px-4 py-10">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <p className="font-heading text-lg font-bold text-brand">Bolti Rakhi</p>
+            <p className="font-heading text-lg font-bold text-brand">{LEGAL_NAME}</p>
             <p className="mt-2 text-sm text-muted">
               A rakhi that carries your voice. Record a message, we print a QR on
               the packaging, and your brother watches it when he opens the box.
             </p>
+
+            {/*
+              A real address, a real number and a GSTIN, on every page.
+              Payment gateways check for exactly this before they let a shop go
+              live, and a customer deciding whether to trust a name they have
+              never heard of looks for the same three things.
+            */}
+            <address className="mt-4 text-sm not-italic text-muted">
+              {ADDRESS_LINES.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </address>
+
+            <p className="mt-3 text-sm">
+              <a href={SUPPORT_PHONE_HREF} className="text-muted hover:text-brand">
+                {SUPPORT_PHONE_DISPLAY}
+              </a>
+              <br />
+              <a href={SUPPORT_EMAIL_HREF} className="text-muted hover:text-brand">
+                {SUPPORT_EMAIL}
+              </a>
+            </p>
+
+            <p className="mt-3 text-sm text-muted">GSTIN: {GST_NUMBER}</p>
           </div>
 
           <div>
@@ -84,7 +120,7 @@ export function Footer({ categories }: { categories: Category[] }) {
         </div>
 
         <p className="mt-10 border-t border-line pt-6 text-sm text-muted">
-          © {new Date().getFullYear()} Bolti Rakhi. Made in India.
+          © {new Date().getFullYear()} {LEGAL_NAME}. Made in India.
         </p>
       </div>
     </footer>

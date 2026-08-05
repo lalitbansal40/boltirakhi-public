@@ -1,3 +1,12 @@
+import {
+  ADDRESS_ONE_LINE,
+  LEGAL_NAME,
+  SUPPORT_EMAIL,
+  SUPPORT_EMAIL_HREF,
+  SUPPORT_PHONE_DISPLAY,
+  SUPPORT_PHONE_HREF,
+} from '@/lib/business';
+
 export const metadata = {
   title: 'Privacy Policy',
   description:
@@ -52,9 +61,13 @@ export default function Page() {
         also means anyone he shares the link with can see it too.
       </p>
       <p className="mt-2">
-        <strong>[BUSINESS: state how long recordings are kept — for example
-        "for 12 months after the order, then deleted". Pick a period and honour
-        it.]</strong>
+        <strong>
+          We keep a recording for 12 months from the date of the order, and then
+          delete it.
+        </strong>{' '}
+        If you would like it removed sooner, write to us and we will delete it —
+        you do not have to give a reason. Deleting it stops the QR code from
+        playing anything.
       </p>
       <p className="mt-2">
         Our staff can access recordings only to fix a problem you have reported
@@ -88,7 +101,11 @@ export default function Page() {
 
       <h2 className="mt-8 text-xl font-semibold text-ink">What you can ask for</h2>
       <p className="mt-2">
-        Write to <strong>[BUSINESS: support email]</strong> and we will tell you
+        Write to{' '}
+        <a href={SUPPORT_EMAIL_HREF} className="font-semibold text-brand hover:underline">
+          {SUPPORT_EMAIL}
+        </a>{' '}
+        and we will tell you
         what we hold about you, correct it, or delete it. Deleting your account
         does not remove records we are required to keep for tax purposes, and it
         does not undo an order already dispatched.
@@ -102,12 +119,17 @@ export default function Page() {
 
       <h2 className="mt-8 text-xl font-semibold text-ink">Contact</h2>
       <p className="mt-2">
-        <strong>[BUSINESS: support email]</strong> ·{' '}
-        <strong>[BUSINESS: phone]</strong>
+        <a href={SUPPORT_EMAIL_HREF} className="font-semibold text-brand hover:underline">
+          {SUPPORT_EMAIL}
+        </a>{' '}
+        ·{' '}
+        <a href={SUPPORT_PHONE_HREF} className="font-semibold text-brand hover:underline">
+          {SUPPORT_PHONE_DISPLAY}
+        </a>
       </p>
 
       <p className="mt-8 text-sm">
-        [BUSINESS: legal name] · [BUSINESS: registered address]
+        {LEGAL_NAME} · {ADDRESS_ONE_LINE}
       </p>
     </>
   );

@@ -1,4 +1,12 @@
-import { SUPPORT_PHONE_DISPLAY, SUPPORT_PHONE_HREF } from '@/lib/business';
+import {
+  ADDRESS_ONE_LINE,
+  LEGAL_NAME,
+  SUPPORT_EMAIL,
+  SUPPORT_EMAIL_HREF,
+  SUPPORT_PHONE_DISPLAY,
+  SUPPORT_PHONE_HREF,
+} from '@/lib/business';
+
 export const metadata = {
   title: 'Shipping Policy',
   description:
@@ -61,13 +69,16 @@ export default function Page() {
       <h2 className="mt-8 text-xl font-semibold text-ink">If something goes wrong</h2>
       <p className="mt-2">
         If your parcel is delayed, damaged, or does not arrive, contact us at{' '}
-        <strong>[BUSINESS: support email]</strong> or{' '}
+        <a href={SUPPORT_EMAIL_HREF} className="font-semibold text-brand hover:underline">
+          {SUPPORT_EMAIL}
+        </a>{' '}
+        or{' '}
         <a href={SUPPORT_PHONE_HREF} className="font-semibold text-brand underline-offset-4 hover:underline">{SUPPORT_PHONE_DISPLAY}</a> with your order number and we will
         sort it out.
       </p>
 
       <p className="mt-8 text-sm">
-        [BUSINESS: legal name] · [BUSINESS: registered address]
+        {LEGAL_NAME} · {ADDRESS_ONE_LINE}
       </p>
     </>
   );

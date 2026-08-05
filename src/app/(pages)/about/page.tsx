@@ -1,3 +1,5 @@
+import { ADDRESS_ONE_LINE, LEGAL_NAME } from '@/lib/business';
+
 export const metadata = {
   title: 'About Bolti Rakhi',
   description:
@@ -39,10 +41,26 @@ export default function Page() {
       </p>
 
       <h2 className="mt-8 text-xl font-semibold text-ink">Who we are</h2>
-      <p className="mt-2">[BUSINESS: two or three lines about the founders and the shop]</p>
+      {/*
+        Only what is true. A founder's story invented to fill this space is the
+        kind of thing that has to be taken down later, by which time it has been
+        screenshotted. If the owner wants to say more about themselves, that is
+        theirs to write.
+      */}
+      <p className="mt-2">
+        Bolti Rakhi is a small business in Jaipur. We do not make rakhis — we
+        choose them, and we send them with the one thing a courier cannot carry:
+        your voice.
+      </p>
+      <p className="mt-2">
+        Every box has a QR code printed on it. You record a message when you
+        order, your brother scans it when he opens the box, and he hears you
+        before he ties the rakhi. That is the whole idea, and it is the only
+        reason this shop exists.
+      </p>
 
       <p className="mt-8 text-sm">
-        [BUSINESS: legal name] · [BUSINESS: registered address]
+        {LEGAL_NAME} · {ADDRESS_ONE_LINE}
       </p>
     </>
   );

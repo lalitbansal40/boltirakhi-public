@@ -1,5 +1,14 @@
 import Link from 'next/link';
 
+import {
+  ADDRESS_ONE_LINE,
+  GST_NUMBER,
+  JURISDICTION_CITY,
+  LEGAL_NAME,
+  SUPPORT_EMAIL,
+  SUPPORT_EMAIL_HREF,
+} from '@/lib/business';
+
 export const metadata = {
   title: 'Terms of Service',
   description: 'The terms you agree to when you order from Bolti Rakhi.',
@@ -94,12 +103,14 @@ export default function Page() {
       <h2 className="mt-8 text-xl font-semibold text-ink">Governing law</h2>
       <p className="mt-2">
         These terms are governed by the laws of India, and the courts at{' '}
-        <strong>[BUSINESS: city]</strong> have jurisdiction.
+        <strong>{JURISDICTION_CITY}</strong> have jurisdiction.
       </p>
 
       <p className="mt-8 text-sm">
-        [BUSINESS: legal name] · [BUSINESS: registered address] ·{' '}
-        [BUSINESS: support email]
+        {LEGAL_NAME} · {ADDRESS_ONE_LINE} · GSTIN {GST_NUMBER} ·{' '}
+        <a href={SUPPORT_EMAIL_HREF} className="text-brand hover:underline">
+          {SUPPORT_EMAIL}
+        </a>
       </p>
     </>
   );
