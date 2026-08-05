@@ -2,6 +2,7 @@
 
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { useAuth } from '@/components/auth/auth-provider';
@@ -211,6 +212,20 @@ export function CheckoutView() {
                 disabled={!selectedId}
                 customerEmail={email}
               />
+
+              {/*
+                Said before the money, not after.
+                A seasonal no-returns rule that somebody meets for the first
+                time on the refunds page — having already paid — is the
+                complaint that goes to the payment gateway rather than to us.
+              */}
+              <p className="text-xs text-muted">
+                Rakhi is a seasonal item, so we do not take returns. You can
+                cancel any time before we ship.{' '}
+                <Link href="/refunds" className="underline hover:text-brand">
+                  Cancellation policy
+                </Link>
+              </p>
 
               <SupportNote />
             </>
