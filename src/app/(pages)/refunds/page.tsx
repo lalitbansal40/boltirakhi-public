@@ -1,3 +1,4 @@
+import { SUPPORT_PHONE_DISPLAY, SUPPORT_PHONE_HREF } from '@/lib/business';
 export const metadata = {
   title: 'Refund and Cancellation Policy',
   description:
@@ -74,7 +75,7 @@ export default function Page() {
       <h2 className="mt-8 text-xl font-semibold text-ink">Reaching us</h2>
       <p className="mt-2">
         <strong>[BUSINESS: support email]</strong> ·{' '}
-        <strong>[BUSINESS: phone]</strong>
+        <a href={SUPPORT_PHONE_HREF} className="font-semibold text-brand underline-offset-4 hover:underline">{SUPPORT_PHONE_DISPLAY}</a>
       </p>
 
       <p className="mt-8 text-sm">

@@ -1,3 +1,4 @@
+import { SUPPORT_PHONE_DISPLAY, SUPPORT_PHONE_HREF } from '@/lib/business';
 export const metadata = {
   title: 'Contact us',
   description: 'How to reach Bolti Rakhi about an order, a delivery or a refund.',
@@ -31,7 +32,7 @@ export default function Page() {
 
         <div className="rounded-[var(--radius-card)] border border-line p-4">
           <p className="text-sm font-medium text-ink">Phone</p>
-          <p className="mt-1 text-lg text-brand">[BUSINESS: phone]</p>
+          <a href={SUPPORT_PHONE_HREF} className="mt-1 block text-lg text-brand hover:underline">{SUPPORT_PHONE_DISPLAY}</a>
           <p className="mt-1 text-sm text-muted">[BUSINESS: hours, e.g. 10am–7pm, Mon–Sat]</p>
         </div>
       </div>

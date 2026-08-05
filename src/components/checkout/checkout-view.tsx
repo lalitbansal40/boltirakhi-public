@@ -8,6 +8,7 @@ import { useAuth } from '@/components/auth/auth-provider';
 import { useCart } from '@/components/cart/cart-provider';
 import { AddressForm } from '@/components/checkout/address-form';
 import { PayButton } from '@/components/checkout/pay-button';
+import { SupportNote } from '@/components/shared/support-note';
 import { PaymentModeBanner } from '@/components/checkout/payment-mode-banner';
 import { Button } from '@/components/ui/button';
 import { listAddresses, type Address } from '@/lib/account-api';
@@ -182,6 +183,8 @@ export function CheckoutView() {
                 status={payment}
                 disabled={!selectedId}
               />
+
+              <SupportNote />
             </>
           )}
         </div>

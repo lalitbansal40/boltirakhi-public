@@ -11,6 +11,7 @@ import { useCart } from '@/components/cart/cart-provider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { SupportNote } from '@/components/shared/support-note';
 import type { Category } from '@/lib/types';
 import { formatPaise } from '@/lib/money';
 import { MAX_QTY } from '@/lib/cart-storage';
@@ -254,6 +255,8 @@ export function CartView({ categories }: { categories: Category[] }) {
               >
                 {hasBlockedLine ? 'Fix the items above' : 'Proceed to checkout'}
               </Button>
+
+              <SupportNote compact />
 
               <p className="mt-2 text-center text-xs text-muted">
                 {isSignedIn
