@@ -24,6 +24,8 @@ export interface OrderView {
   paidAt: string | null;
   placedAt: string;
   hasBolti: boolean;
+  /** Tokens for this order's Bolti messages, so the page can link to them. */
+  boltiTokens?: string[];
   items: {
     title: string;
     slug: string;

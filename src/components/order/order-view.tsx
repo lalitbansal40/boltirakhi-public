@@ -75,9 +75,16 @@ export function OrderView({ orderNumber }: { orderNumber: string }) {
             Your rakhi carries a message
           </p>
           <p className="mt-1 text-sm text-muted">
-            You can record it any time before we pack the parcel — we will send you
-            the link. Recording is optional; the rakhi ships either way.
+            Record it any time before we pack the parcel. It is optional — the
+            rakhi ships either way.
           </p>
+          {order.boltiTokens?.map((token) => (
+            <Button
+              key={token}
+              className="mt-3"
+              render={<Link href={`/bolti/`}>Record your message</Link>}
+            />
+          ))}
         </div>
       )}
 
