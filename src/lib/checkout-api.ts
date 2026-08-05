@@ -121,3 +121,27 @@ export function verifyPayment(input: {
 export function getOrder(orderNumber: string) {
   return call<{ order: OrderView }>(`/orders/${encodeURIComponent(orderNumber)}`);
 }
+
+export interface OrderListRow {
+  orderNumber: string;
+  status: string;
+  paymentStatus: string;
+  placedAt: string;
+  totalPaise: number;
+  itemCount: number;
+  firstItemTitle: string | null;
+  firstItemImage: string | null;
+}
+
+export interface Paginated<T> {
+  items: T[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+/** This customer's own orders. The server filters by user; nothing here does. */
+export function listOrders(page = 1) {
+  return call<Paginated<OrderListRow>>(`/orders?page=${page}&limit=10`);
+}
