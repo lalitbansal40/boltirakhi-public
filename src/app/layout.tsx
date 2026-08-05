@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Fraunces, Inter, Noto_Sans_Devanagari } from "next/font/google";
 
 import { AuthProvider } from "@/components/auth/auth-provider";
 import { CartProvider } from "@/components/cart/cart-provider";
@@ -21,6 +21,24 @@ const heading = Fraunces({
   subsets: ["latin"],
   display: "swap",
   weight: ["600", "700"],
+});
+
+/**
+ * Devanagari, for the letter a sister writes in Hindi or Marathi.
+ *
+ * Inter and Fraunces are latin-only. Without this, Hindi falls back to
+ * whatever the operating system has, which renders unevenly and reads as a
+ * broken translation rather than a font problem — so nobody would report it.
+ *
+ * Loaded as a variable and applied only where the letter is written, not
+ * across the site: every visitor would otherwise fetch a script they cannot
+ * read.
+ */
+const devanagari = Noto_Sans_Devanagari({
+  variable: "--font-devanagari",
+  subsets: ["devanagari"],
+  display: "swap",
+  weight: ["400", "500"],
 });
 
 const body = Inter({
@@ -56,7 +74,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${heading.variable} ${body.variable} antialiased`}
+      className={`${heading.variable} ${body.variable} ${devanagari.variable} antialiased`}
     >
       {/* dvh, not vh — mobile browsers measure vh against a chrome that is not
           there, leaving a gap under the footer. */}

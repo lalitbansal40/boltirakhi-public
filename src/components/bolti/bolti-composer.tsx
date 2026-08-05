@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { useAuth } from '@/components/auth/auth-provider';
+import { LetterPicker } from '@/components/bolti/letter-picker';
 import { VideoRecorder } from '@/components/bolti/video-recorder';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -161,12 +162,13 @@ export function BoltiComposer({ token }: { token: string }) {
 
       <section>
         <h2 className="font-heading text-lg font-semibold text-ink">Write a letter</h2>
+        <LetterPicker currentText={letter} onUse={setLetter} />
         <textarea
           value={letter}
           onChange={(event) => setLetter(event.target.value.slice(0, MAX_LETTER))}
           rows={5}
           placeholder="Something only the two of you would understand…"
-          className="mt-2 w-full rounded-[var(--radius-card)] border border-line bg-surface p-3 text-ink outline-none focus:border-brand focus:ring-3 focus:ring-brand/20"
+          className="mt-3 w-full rounded-[var(--radius-card)] border border-line bg-surface p-3 font-[var(--font-devanagari)] text-ink outline-none focus:border-brand focus:ring-3 focus:ring-brand/20"
         />
         <p className="mt-1 text-right text-xs text-muted">
           {letter.length} / {MAX_LETTER}
