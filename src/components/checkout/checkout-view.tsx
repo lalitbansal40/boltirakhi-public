@@ -7,8 +7,11 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/components/auth/auth-provider';
 import { useCart } from '@/components/cart/cart-provider';
 import { AddressForm } from '@/components/checkout/address-form';
+import { PayButton } from '@/components/checkout/pay-button';
+import { PaymentModeBanner } from '@/components/checkout/payment-mode-banner';
 import { Button } from '@/components/ui/button';
 import { listAddresses, type Address } from '@/lib/account-api';
+import { getPaymentStatus, type PaymentStatus } from '@/lib/checkout-api';
 import { formatPaise } from '@/lib/money';
 
 export function CheckoutView() {
@@ -19,6 +22,7 @@ export function CheckoutView() {
   const [addresses, setAddresses] = useState<Address[] | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
+  const [payment, setPayment] = useState<PaymentStatus | null>(null);
 
   /**
    * Both guards wait for `isReady`.
@@ -40,6 +44,14 @@ export function CheckoutView() {
     if (!cartReady) return;
     if (lines.length === 0) router.replace('/cart');
   }, [cartReady, lines.length, router]);
+
+  // Public, and independent of everything else — fetched immediately so the
+  // mode banner is right from the first paint rather than appearing late.
+  useEffect(() => {
+    getPaymentStatus()
+      .then(setPayment)
+      .catch(() => setPayment(null));
+  }, []);
 
   useEffect(() => {
     if (!authReady || !isSignedIn) return;
@@ -129,6 +141,7 @@ export function CheckoutView() {
 
       <aside className="lg:sticky lg:top-20 lg:self-start">
         <div className="rounded-[var(--radius-card)] border border-line bg-surface p-4">
+          <PaymentModeBanner status={payment} />
           <h2 className="font-heading text-lg font-semibold text-ink">Order summary</h2>
 
           {!pricing ? (
@@ -164,11 +177,11 @@ export function CheckoutView() {
                 </span>
               </div>
 
-              {/* Payment lands in the next task. A button that looks live and
-                  does nothing is worse than one that says where it is up to. */}
-              <Button size="lg" className="mt-4 w-full" disabled={!selectedId}>
-                {selectedId ? 'Continue to payment' : 'Choose an address'}
-              </Button>
+              <PayButton
+                address={addresses?.find((a) => a.id === selectedId) ?? null}
+                status={payment}
+                disabled={!selectedId}
+              />
             </>
           )}
         </div>
