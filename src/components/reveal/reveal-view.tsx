@@ -98,6 +98,10 @@ export function RevealView({ token }: { token: string }) {
                   src={data.videoThumbUrl}
                   alt=""
                   fill
+                  // The poster fills a narrow column on a phone and a wider
+                  // one on a laptop. Without this the browser fetches the
+                  // largest size for both.
+                  sizes="(min-width: 640px) 640px, 100vw"
                   className="object-cover opacity-70"
                   unoptimized
                 />
@@ -127,7 +131,15 @@ export function RevealView({ token }: { token: string }) {
         <div className="grid grid-cols-2 gap-2">
           {data.photoUrls.map((url) => (
             <div key={url} className="relative aspect-square overflow-hidden rounded-[var(--radius-card)]">
-              <Image src={url} alt="" fill className="object-cover" unoptimized />
+              <Image
+                src={url}
+                alt=""
+                fill
+                // Two per row, so half the viewport at most.
+                sizes="(min-width: 640px) 320px, 50vw"
+                className="object-cover"
+                unoptimized
+              />
             </div>
           ))}
         </div>
