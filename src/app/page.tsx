@@ -19,11 +19,29 @@ export default async function Page() {
    * If the API is down, an empty home page is bad; a home page that will not
    * open at all is worse. A missing section simply does not render.
    */
-  const [categories, featured, combos] = await Promise.all([
+  const [categories, featured] = await Promise.all([
     getCategories().catch(() => null),
     getProducts({ limit: 4 }).catch(() => null),
-    getProducts({ category: 'rakhi-combo', limit: 4 }).catch(() => null),
   ]);
+
+  /**
+   * The second row follows whichever category exists, rather than a slug
+   * written into this file.
+   *
+   * A hardcoded slug here pointed at categories that had never been created,
+   * so the section silently never rendered and "View all" led to a 404 — and
+   * nothing reported it, because a missing category simply returns nothing.
+   */
+  const bolti = categories?.find((c) => c.slug === 'bolti-rakhi');
+  const second = bolti ?? categories?.[0];
+
+  const secondRow = second
+    ? await getProducts({ category: second.slug, limit: 4 }).catch(() => null)
+    : null;
+
+  // Whatever the first row already showed should not appear again below it.
+  const featuredSlugs = new Set((featured?.items ?? []).map((p) => p.slug));
+  const secondItems = (secondRow?.items ?? []).filter((p) => !featuredSlugs.has(p.slug));
 
   return (
     <>
@@ -34,18 +52,18 @@ export default async function Page() {
       {featured && featured.items.length > 0 && (
         <ProductSection
           title="Featured this season"
-          href="/rakhi/bhaiya-bhabhi-rakhi"
+          href={`/rakhi/${categories?.[0]?.slug ?? ''}`}
           products={featured.items}
         />
       )}
 
       <HowItWorks />
 
-      {combos && combos.items.length > 0 && (
+      {second && secondItems.length > 0 && (
         <ProductSection
-          title="Combos and chocolates"
-          href="/rakhi/rakhi-combo"
-          products={combos.items}
+          title={`More in ${second.name}`}
+          href={`/rakhi/${second.slug}`}
+          products={secondItems}
         />
       )}
 

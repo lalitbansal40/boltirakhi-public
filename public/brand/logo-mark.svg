@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Bolti Rakhi">
+  <!--
+    The mark: a rakhi seen head-on, with a sound wave where the stone would be.
+
+    That is the whole product in one shape — a thread you tie, carrying a voice.
+    It reads at 16px as a flower and at 200px as a rakhi, which is what a
+    favicon has to do.
+  -->
+  <g fill="none" stroke="#b4322e" stroke-width="3" stroke-linecap="round">
+    <!-- The thread, curving away on both sides as it does on a wrist. -->
+    <path d="M2 40 C 12 40, 14 32, 22 32" />
+    <path d="M62 40 C 52 40, 50 32, 42 32" />
+  </g>
+
+  <!-- Petals. Eight, evenly turned — the shape every rakhi shares. -->
+  <g fill="#e8b64c">
+    <g id="p"><ellipse cx="32" cy="18" rx="4.5" ry="8"/></g>
+    <use href="#p" transform="rotate(45 32 32)"/>
+    <use href="#p" transform="rotate(90 32 32)"/>
+    <use href="#p" transform="rotate(135 32 32)"/>
+    <use href="#p" transform="rotate(180 32 32)"/>
+    <use href="#p" transform="rotate(225 32 32)"/>
+    <use href="#p" transform="rotate(270 32 32)"/>
+    <use href="#p" transform="rotate(315 32 32)"/>
+  </g>
+
+  <circle cx="32" cy="32" r="11" fill="#b4322e"/>
+
+  <!--
+    The sound wave, centred. Three bars rather than five: at favicon size
+    five become a smudge, three still read as sound.
+  -->
+  <g stroke="#fdf6ee" stroke-width="2.6" stroke-linecap="round">
+    <path d="M27 29 v6"/>
+    <path d="M32 26 v12"/>
+    <path d="M37 29 v6"/>
+  </g>
+</svg>
