@@ -18,14 +18,25 @@ export interface PricedCartLine {
   title: string;
   slug: string;
   image?: string;
+  /** The price of one pack, not of one rakhi. */
   pricePaise: number;
   qty: number;
+  /** 1 for a single. Absent on nothing — the server always sends it. */
+  packSize?: number;
+  /** "Pack of 4". Server-worded so the cart and the invoice never disagree. */
+  packLabel?: string;
   type: 'normal' | 'bolti';
   /** Zero when the line has an issue, so it never lands in the total. */
   lineTotalPaise: number;
   issue?: LineIssue;
-  /** Only present when fewer are left than were asked for. */
+  /** Packs left, not rakhis — "only 2 left" means two boxes. */
   availableQty?: number;
+  /**
+   * The packs this product sells right now, smallest first, always with 1.
+   * The cart's pack switcher is built from this rather than from a fixed list,
+   * so it can never offer a pack the order endpoint would reject.
+   */
+  availablePacks?: number[];
 }
 
 export interface PricedCart {

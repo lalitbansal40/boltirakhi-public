@@ -13,6 +13,7 @@ import {
 import { priceCart, type PricedCart } from '@/lib/cart-api';
 import {
   addLine,
+  changePack,
   countItems,
   readCart,
   removeLine,
@@ -44,9 +45,15 @@ interface CartContextValue {
   /** The pricing request failed — network down, backend restarting. */
   pricingFailed: boolean;
   couponCode: string | null;
-  add: (productId: string, qty?: number) => void;
-  updateQty: (productId: string, qty: number) => void;
-  remove: (productId: string) => void;
+  /**
+   * `packSize` defaults to 1 so callers that never heard of packs — and
+   * products that have none — keep working unchanged.
+   */
+  add: (productId: string, packSize?: number, qty?: number) => void;
+  updateQty: (productId: string, packSize: number, qty: number) => void;
+  remove: (productId: string, packSize: number) => void;
+  /** Swap a line to another pack, merging it if that pack is already in there. */
+  changeLinePack: (productId: string, from: number, to: number) => void;
   clear: () => void;
   applyCoupon: (code: string) => void;
   removeCoupon: () => void;
@@ -134,16 +141,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return () => clearTimeout(timer);
   }, [lines, couponCode, isReady]);
 
-  const add = useCallback((productId: string, qty = 1) => {
-    setLines((current) => addLine(current, productId, qty));
+  const add = useCallback((productId: string, packSize = 1, qty = 1) => {
+    setLines((current) => addLine(current, productId, packSize, qty));
   }, []);
 
-  const updateQty = useCallback((productId: string, qty: number) => {
-    setLines((current) => setQty(current, productId, qty));
+  const updateQty = useCallback((productId: string, packSize: number, qty: number) => {
+    setLines((current) => setQty(current, productId, packSize, qty));
   }, []);
 
-  const remove = useCallback((productId: string) => {
-    setLines((current) => removeLine(current, productId));
+  const remove = useCallback((productId: string, packSize: number) => {
+    setLines((current) => removeLine(current, productId, packSize));
+  }, []);
+
+  const changeLinePack = useCallback((productId: string, from: number, to: number) => {
+    setLines((current) => changePack(current, productId, from, to));
   }, []);
 
   const clear = useCallback(() => {
@@ -169,6 +180,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       add,
       updateQty,
       remove,
+      changeLinePack,
       clear,
       applyCoupon,
       removeCoupon,
@@ -183,6 +195,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       add,
       updateQty,
       remove,
+      changeLinePack,
       clear,
       applyCoupon,
       removeCoupon,

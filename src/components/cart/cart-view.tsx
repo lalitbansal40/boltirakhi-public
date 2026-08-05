@@ -35,6 +35,7 @@ export function CartView({ categories }: { categories: Category[] }) {
     couponCode,
     updateQty,
     remove,
+    changeLinePack,
     applyCoupon,
     removeCoupon,
   } = useCart();
@@ -64,7 +65,13 @@ export function CartView({ categories }: { categories: Category[] }) {
     <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
       <ul className="divide-y divide-line border-y border-line">
         {(pricing?.lines ?? []).map((line) => (
-          <li key={line.productId} className="flex gap-3 py-4 sm:gap-4">
+          // Keyed by product *and* pack: the same rakhi in a pack of two and a
+          // pack of eight is two rows, and a key of just the id would make
+          // React treat them as one.
+          <li
+            key={`${line.productId}:${line.packSize ?? 1}`}
+            className="flex gap-3 py-4 sm:gap-4"
+          >
             <div className="relative size-20 shrink-0 overflow-hidden rounded-[var(--radius-card)] bg-accent-soft sm:size-24">
               {line.image ? (
                 <Image
@@ -93,6 +100,37 @@ export function CartView({ categories }: { categories: Category[] }) {
                 <p className="font-medium text-ink">{line.title}</p>
               )}
 
+              {/*
+                Named, and changeable without going back to the product page.
+                The options come from the server so a pack that has sold out
+                since this cart was filled simply is not on the list.
+              */}
+              {(line.packSize ?? 1) > 1 || (line.availablePacks?.length ?? 0) > 1 ? (
+                <div className="mt-1 flex items-center gap-2">
+                  <label htmlFor={`pack-${line.productId}`} className="sr-only">
+                    Pack size for {line.title}
+                  </label>
+                  <select
+                    id={`pack-${line.productId}`}
+                    value={line.packSize ?? 1}
+                    onChange={(event) =>
+                      changeLinePack(
+                        line.productId,
+                        line.packSize ?? 1,
+                        Number(event.target.value),
+                      )
+                    }
+                    className="min-h-11 rounded-[var(--radius-input)] border border-line bg-surface px-2 text-sm text-ink"
+                  >
+                    {(line.availablePacks ?? [line.packSize ?? 1]).map((size) => (
+                      <option key={size} value={size}>
+                        {size === 1 ? 'Single' : `Pack of ${size}`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ) : null}
+
               {line.type === 'bolti' && (
                 <Badge variant="secondary" className="mt-1">
                   Carries your voice
@@ -107,7 +145,9 @@ export function CartView({ categories }: { categories: Category[] }) {
                   <AlertTriangle className="mt-0.5 size-4 shrink-0" aria-hidden />
                   {line.issue === 'unavailable'
                     ? 'No longer available. Remove it to carry on.'
-                    : `Only ${line.availableQty} left. Lower the quantity or remove it.`}
+                    : `Only ${line.availableQty} left${
+                        (line.packSize ?? 1) > 1 ? ' at this pack size' : ''
+                      }. Lower the quantity or remove it.`}
                 </p>
               )}
 
@@ -115,13 +155,13 @@ export function CartView({ categories }: { categories: Category[] }) {
                 <QtyStepper
                   qty={line.qty}
                   max={line.availableQty ?? MAX_QTY}
-                  onChange={(qty) => updateQty(line.productId, qty)}
+                  onChange={(qty) => updateQty(line.productId, line.packSize ?? 1, qty)}
                   disabled={line.issue === 'unavailable'}
                 />
 
                 <button
                   type="button"
-                  onClick={() => remove(line.productId)}
+                  onClick={() => remove(line.productId, line.packSize ?? 1)}
                   // 44px minimum: this sits next to a stepper, and a mis-tap
                   // here deletes something.
                   className="flex min-h-11 items-center gap-1.5 px-1 text-sm text-muted hover:text-destructive"

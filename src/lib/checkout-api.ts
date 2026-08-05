@@ -100,7 +100,14 @@ export function createOrder(input: {
     body: JSON.stringify({
       // Straight from the cart, not from the priced response — that one also
       // carries lines flagged as unavailable.
-      items: input.lines.map((line) => ({ productId: line.productId, qty: line.qty })),
+      // `packSize` is listed explicitly. Dropping it here would place the
+      // order at single prices and ship one rakhi where a box was paid for,
+      // and nothing before the parcel arrives would say so.
+      items: input.lines.map((line) => ({
+        productId: line.productId,
+        packSize: line.packSize,
+        qty: line.qty,
+      })),
       shippingAddress,
       // Omitting this would charge the customer the undiscounted total.
       couponCode: input.couponCode,
