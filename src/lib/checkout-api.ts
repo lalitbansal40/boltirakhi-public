@@ -88,6 +88,7 @@ export function createOrder(input: {
   lines: CartLine[];
   address: Address;
   couponCode?: string;
+  customerEmail?: string;
 }) {
   const { id, isDefault, label, ...shippingAddress } = input.address;
   void id;
@@ -103,6 +104,8 @@ export function createOrder(input: {
       shippingAddress,
       // Omitting this would charge the customer the undiscounted total.
       couponCode: input.couponCode,
+      // Optional. No email simply means no receipt — the SMS still goes.
+      customerEmail: input.customerEmail || undefined,
     }),
   });
 }

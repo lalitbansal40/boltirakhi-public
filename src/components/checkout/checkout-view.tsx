@@ -11,6 +11,7 @@ import { PayButton } from '@/components/checkout/pay-button';
 import { SupportNote } from '@/components/shared/support-note';
 import { PaymentModeBanner } from '@/components/checkout/payment-mode-banner';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { listAddresses, type Address } from '@/lib/account-api';
 import { getPaymentStatus, type PaymentStatus } from '@/lib/checkout-api';
 import { formatPaise } from '@/lib/money';
@@ -24,6 +25,7 @@ export function CheckoutView() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
   const [payment, setPayment] = useState<PaymentStatus | null>(null);
+  const [email, setEmail] = useState('');
 
   /**
    * Both guards wait for `isReady`.
@@ -178,10 +180,36 @@ export function CheckoutView() {
                 </span>
               </div>
 
+              {/*
+                Optional, and it says why it is being asked for. Requiring an
+                email would cost checkouts, and the confirmation SMS goes out
+                either way — nobody is left without one. Asking without a
+                reason is what makes a form feel like data collection.
+              */}
+              <div className="mt-4 border-t border-line pt-4">
+                <label htmlFor="receipt-email" className="text-sm font-medium text-ink">
+                  Email <span className="font-normal text-muted">(optional)</span>
+                </label>
+                <Input
+                  id="receipt-email"
+                  type="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  placeholder="you@example.com"
+                  className="mt-1"
+                />
+                <p className="mt-1 text-xs text-muted">
+                  We will send your order details here. You will get an SMS
+                  either way.
+                </p>
+              </div>
+
               <PayButton
                 address={addresses?.find((a) => a.id === selectedId) ?? null}
                 status={payment}
                 disabled={!selectedId}
+                customerEmail={email}
               />
 
               <SupportNote />

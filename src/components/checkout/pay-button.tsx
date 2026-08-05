@@ -40,10 +40,12 @@ export function PayButton({
   address,
   status,
   disabled,
+  customerEmail,
 }: {
   address: Address | null;
   status: PaymentStatus | null;
   disabled?: boolean;
+  customerEmail?: string;
 }) {
   const router = useRouter();
   const { user } = useAuth();
@@ -144,6 +146,7 @@ export function PayButton({
         lines,
         address: address!,
         couponCode: couponCode ?? undefined,
+        customerEmail,
       });
       setPending(order);
       openRazorpay(order);
