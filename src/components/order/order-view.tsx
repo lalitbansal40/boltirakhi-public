@@ -94,7 +94,11 @@ export function OrderView({ orderNumber }: { orderNumber: string }) {
             <li key={`${item.slug}-${index}`} className="flex justify-between gap-3 p-4 text-sm">
               <div>
                 <p className="font-medium text-ink">{item.title}</p>
-                <p className="text-muted">Qty {item.qty}</p>
+                <p className="text-muted">
+                  {/* No label on a single — "Pack of 1" reads like a mistake,
+                      and every order placed before packs existed is one. */}
+                  {item.packLabel ? `${item.packLabel} · ` : ''}Qty {item.qty}
+                </p>
               </div>
               <p className="text-ink">{formatPaise(item.pricePaise * item.qty)}</p>
             </li>

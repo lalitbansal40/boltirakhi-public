@@ -2,10 +2,11 @@ import { QrCode, ShieldCheck, Truck } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 import { ProductGallery } from '@/components/catalog/product-gallery';
 import { Badge } from '@/components/ui/badge';
-import { AddToCartButton } from '@/components/cart/add-to-cart-button';
+import { PackPicker, PackPickerSkeleton } from '@/components/product/pack-picker';
 import { getProduct } from '@/lib/catalog';
 import { formatPaise } from '@/lib/money';
 
@@ -121,15 +122,38 @@ export default async function Page({ params }: { params: Params }) {
                 packaging, and your brother watches it when he opens the box. Recording it is
                 optional — the rakhi arrives just the same without one.
               </p>
+
+              {/*
+                🔴 Said before the money, not after.
+                One order carries one message, so a pack of four is four rakhis
+                sharing a single video. Somebody who assumed four separate
+                recordings finds out when the parcel arrives, and that is a
+                complaint we would have written ourselves.
+              */}
+              {(product.variants?.length ?? 0) > 0 && (
+                <p className="text-sm font-medium text-ink">
+                  One message per pack — every rakhi in the box carries the same QR
+                  code and plays the same video.
+                </p>
+              )}
             </div>
           )}
 
           <div className="space-y-2">
-            <AddToCartButton
-              productId={product._id}
-              title={product.title}
-              inStock={product.inStock}
-            />
+            {/*
+              `useSearchParams` reads `?pack=4`, and Next requires a Suspense
+              boundary around that. Without one `next build` fails while `next
+              dev` carries on working, so the mistake only surfaces on deploy.
+            */}
+            <Suspense fallback={<PackPickerSkeleton />}>
+              <PackPicker
+                productId={product._id}
+                title={product.title}
+                pricePaise={product.pricePaise}
+                inStock={product.inStock}
+                variants={product.variants}
+              />
+            </Suspense>
           </div>
 
           <div className="flex flex-wrap gap-4 border-t border-line pt-4 text-sm text-muted">

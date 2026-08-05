@@ -82,6 +82,20 @@ export type ProductType = 'normal' | 'bolti';
  * and a field that exists in the type is a field somebody eventually renders.
  * Availability is a boolean and nothing more.
  */
+/**
+ * One multi-pack. `pricePaise` is the price of the whole box, not per rakhi.
+ *
+ * Availability is a boolean here too — a shopper never sees a stock count.
+ */
+export interface PackVariant {
+  packSize: number;
+  pricePaise: number;
+  mrpPaise: number;
+  /** What this box saves against the same number of singles. Server-computed. */
+  savingPaise: number;
+  inStock: boolean;
+}
+
 export interface Product {
   _id: string;
   title: string;
@@ -95,6 +109,14 @@ export interface Product {
   mrpPaise: number;
   discountPercent?: number;
   inStock: boolean;
+  /**
+   * Multi-packs, if this product sells any. Absent or empty on most — they
+   * sell as singles, and the picker stays off the page entirely.
+   *
+   * The server sends only the active ones, and `savingPaise` already worked
+   * out. Recomputing it here would eventually disagree with the invoice.
+   */
+  variants?: PackVariant[];
   type: ProductType;
   tags?: string[];
   metaTitle?: string;

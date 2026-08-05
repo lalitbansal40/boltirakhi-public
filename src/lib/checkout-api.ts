@@ -32,6 +32,8 @@ export interface OrderView {
     image?: string;
     pricePaise: number;
     qty: number;
+    /** "Pack of 4". Absent on singles and on every pre-packs order. */
+    packLabel?: string;
     type: 'normal' | 'bolti';
   }[];
   amount: {
