@@ -1,0 +1,24 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        # `ci`, not `install` — the lockfile is the point of committing one.
+        - npm ci
+    build:
+      commands:
+        # NEXT_PUBLIC_* variables are read at BUILD time and baked into the
+        # bundle. Setting them in Amplify's console is not enough on its own:
+        # they must exist in this shell, which is why they are echoed into a
+        # file the build reads. Getting this wrong produces a site that builds
+        # cleanly and then calls localhost from every visitor's browser.
+        - env | grep -E '^NEXT_PUBLIC_' >> .env.production || true
+        - npm run build
+  artifacts:
+    baseDirectory: .next
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - .next/cache/**/*
