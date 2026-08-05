@@ -131,6 +131,8 @@ export interface OrderListRow {
   itemCount: number;
   firstItemTitle: string | null;
   firstItemImage: string | null;
+  /** Just the flag; the recorder token lives on the detail page. */
+  hasBolti: boolean;
 }
 
 export interface Paginated<T> {
@@ -142,6 +144,6 @@ export interface Paginated<T> {
 }
 
 /** This customer's own orders. The server filters by user; nothing here does. */
-export function listOrders(page = 1) {
-  return call<Paginated<OrderListRow>>(`/orders?page=${page}&limit=10`);
+export function listOrders(page = 1, limit = 10) {
+  return call<Paginated<OrderListRow>>(`/orders?page=${page}&limit=${limit}`);
 }

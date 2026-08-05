@@ -57,3 +57,23 @@ export function createAddress(input: AddressInput) {
 export function deleteAddress(id: string) {
   return call<null>(`/account/addresses/${id}`, { method: 'DELETE' });
 }
+
+/**
+ * Make one address the default.
+ *
+ * Only this id is sent — the server clears the flag on the others, and doing
+ * it here as well would be a second opinion that could disagree with it.
+ */
+export function setDefaultAddress(id: string) {
+  return call<{ address: Address }>(`/account/addresses/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ isDefault: true }),
+  });
+}
+
+export function updateName(name: string) {
+  return call<{ user: { id: string; name: string | null; phone: string | null } }>(
+    '/account/profile',
+    { method: 'PATCH', body: JSON.stringify({ name }) },
+  );
+}

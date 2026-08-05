@@ -1,6 +1,6 @@
 'use client';
 
-import { Package, ShoppingBag } from 'lucide-react';
+import { Mic, Package, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -102,6 +102,14 @@ export function OrdersList({ categories }: { categories: Category[] }) {
                   {order.firstItemTitle}
                   {order.itemCount > 1 && ` + ${order.itemCount - 1} more`}
                 </p>
+                {/* A marker, not a link. The recorder needs the token, and the
+                    token lives on the detail page this row already opens. */}
+                {order.hasBolti && (
+                  <p className="mt-1 flex items-center gap-1.5 text-sm text-brand">
+                    <Mic className="size-3.5" aria-hidden />
+                    Carries a message
+                  </p>
+                )}
                 <p className="mt-1 text-sm text-muted">
                   {new Date(order.placedAt).toLocaleDateString('en-IN', {
                     day: 'numeric',
