@@ -37,6 +37,15 @@ export function MobileNav({ categories }: { categories: Category[] }) {
 
         <nav aria-label="Categories" className="mt-4 px-4">
           <ul className="space-y-1">
+            <li>
+              <Link
+                href="/rakhi"
+                onClick={() => setOpen(false)}
+                className="block rounded-md px-3 py-2.5 font-medium text-ink hover:bg-accent-soft"
+              >
+                All rakhis
+              </Link>
+            </li>
             {categories.map((category) => (
               <li key={category._id}>
                 <Link
@@ -47,6 +56,9 @@ export function MobileNav({ categories }: { categories: Category[] }) {
                   className="block rounded-md px-3 py-2.5 text-ink hover:bg-accent-soft"
                 >
                   {category.name}
+                  {typeof category.productCount === 'number' && (
+                    <span className="ml-1 text-muted">({category.productCount})</span>
+                  )}
                 </Link>
               </li>
             ))}

@@ -61,6 +61,17 @@ export function Header({ categories }: { categories: Category[] }) {
 
         <nav aria-label="Categories" className="ml-6 hidden lg:block">
           <ul className="flex items-center gap-5 text-sm">
+            {/*
+              "All rakhis" first, and it is the only entry that shows the whole
+              catalogue. Without it every route into the shop lands in a
+              category holding a third of it, and the shop looks smaller than
+              it is.
+            */}
+            <li>
+              <Link href="/rakhi" className="font-medium text-ink hover:text-brand">
+                All rakhis
+              </Link>
+            </li>
             {categories.map((category) => (
               <li key={category._id}>
                 {/* A nav link is a link, not a button. */}
@@ -69,6 +80,9 @@ export function Header({ categories }: { categories: Category[] }) {
                   className="text-ink transition-colors hover:text-brand"
                 >
                   {category.name}
+                  {typeof category.productCount === 'number' && (
+                    <span className="ml-1 text-muted">({category.productCount})</span>
+                  )}
                 </Link>
               </li>
             ))}

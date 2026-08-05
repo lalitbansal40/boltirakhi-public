@@ -38,7 +38,7 @@ function Section({
   );
 }
 
-export function Hero() {
+export function Hero({ featuredCategory }: { featuredCategory?: Category }) {
   return (
     <section className="relative overflow-hidden bg-accent-soft/40">
       <FestiveRain />
@@ -51,13 +51,27 @@ export function Hero() {
           Record a message for your brother. We print a QR code on the packaging.
           He scans it when he opens the box, and hears you.
         </p>
+        {/*
+          Both of these used to point at category slugs that do not exist —
+          /rakhi/bhaiya-bhabhi-rakhi and /rakhi/rakhi-combo — so the biggest
+          button on the site led to a 404.
+
+          /rakhi needs no slug and cannot rot. The second button takes a real
+          category, passed in from the page, which reads it from the API.
+        */}
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Button size="lg" render={<Link href="/rakhi/bhaiya-bhabhi-rakhi" />}>
-            Shop rakhis
+          <Button size="lg" render={<Link href="/rakhi" />}>
+            Shop all rakhis
           </Button>
-          <Button size="lg" variant="outline" render={<Link href="/rakhi/rakhi-combo" />}>
-            See combos
-          </Button>
+          {featuredCategory && (
+            <Button
+              size="lg"
+              variant="outline"
+              render={<Link href={`/rakhi/${featuredCategory.slug}`} />}
+            >
+              {featuredCategory.name}
+            </Button>
+          )}
         </div>
       </div>
     </section>
@@ -85,14 +99,17 @@ export function CategoryTiles({ categories }: { categories: Category[] }) {
 export function ProductSection({
   title,
   href,
+  linkLabel = 'View all',
   products,
 }: {
+  /** Overrides "View all" — the home page counts the catalogue instead. */
+  linkLabel?: string;
   title: string;
   href: string;
   products: CardProduct[];
 }) {
   return (
-    <Section title={title} action={{ label: 'View all', href }}>
+    <Section title={title} action={{ label: linkLabel, href }}>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {products.map((product) => (
           <ProductCard key={product._id} product={product} />

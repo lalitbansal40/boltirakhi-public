@@ -21,7 +21,9 @@ export default async function Page() {
    */
   const [categories, featured] = await Promise.all([
     getCategories().catch(() => null),
-    getProducts({ limit: 4 }).catch(() => null),
+    // Eight, not four. A shop's home page is a shop window, and four rakhis
+    // above the fold reads as a shop that has almost nothing in it.
+    getProducts({ limit: 8 }).catch(() => null),
   ]);
 
   /**
@@ -36,7 +38,7 @@ export default async function Page() {
   const second = bolti ?? categories?.[0];
 
   const secondRow = second
-    ? await getProducts({ category: second.slug, limit: 4 }).catch(() => null)
+    ? await getProducts({ category: second.slug, limit: 8 }).catch(() => null)
     : null;
 
   // Whatever the first row already showed should not appear again below it.
@@ -45,17 +47,26 @@ export default async function Page() {
 
   return (
     <>
-      <Hero />
+      <Hero featuredCategory={second} />
 
-      {categories && categories.length > 0 && <CategoryTiles categories={categories} />}
-
+      {/*
+        Rakhis first, before the category tiles.
+        On a phone the tiles used to sit between the hero and the first rakhi,
+        so the whole first screen after the headline was a row of words. People
+        came to look at rakhis; this shows them rakhis.
+      */}
       {featured && featured.items.length > 0 && (
         <ProductSection
           title="Featured this season"
-          href={`/rakhi/${categories?.[0]?.slug ?? ''}`}
+          href="/rakhi"
+          // Counted, never written in. "See all 15" would still say 15 the day
+          // the twentieth rakhi went up.
+          linkLabel={`See all ${featured.total} rakhis`}
           products={featured.items}
         />
       )}
+
+      {categories && categories.length > 0 && <CategoryTiles categories={categories} />}
 
       <HowItWorks />
 
