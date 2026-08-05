@@ -38,6 +38,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     { url: SITE, lastModified: now, changeFrequency: 'daily', priority: 1 },
+    /**
+     * The whole catalogue on one path, ranked just under the home page.
+     *
+     * This is the page that should win "rakhi online" — a category holds a
+     * third of the shop, and pointing a search engine at one of those instead
+     * shows a visitor a third of what we sell.
+     */
+    {
+      url: `${SITE}/rakhi`,
+      lastModified: now,
+      changeFrequency: 'daily' as const,
+      priority: 0.9,
+    },
+    // The pages a shopper checks before paying a name they do not know.
+    ...['/about', '/contact', '/shipping', '/refunds', '/terms', '/privacy'].map(
+      (path) => ({
+        url: `${SITE}${path}`,
+        lastModified: now,
+        changeFrequency: 'monthly' as const,
+        priority: 0.3,
+      }),
+    ),
     ...(categories ?? []).map((category) => ({
       url: `${SITE}/rakhi/${category.slug}`,
       lastModified: now,

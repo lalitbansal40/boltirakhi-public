@@ -14,7 +14,6 @@ import type { Category } from '@/lib/types';
 const HELP_LINKS = [
   { label: 'All rakhis', href: '/rakhi' },
   { label: 'Shipping', href: '/shipping' },
-  { label: 'Returns', href: '/returns' },
   { label: 'Contact', href: '/contact' },
 ];
 
