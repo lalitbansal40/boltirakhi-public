@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle2, Clock, Mic, Package } from 'lucide-react';
+import { CheckCircle2, Clock, Mic, Package, Truck } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -82,7 +82,7 @@ export function OrderView({ orderNumber }: { orderNumber: string }) {
             <Button
               key={token}
               className="mt-3"
-              render={<Link href={`/bolti/`}>Record your message</Link>}
+              render={<Link href={`/bolti/${token}`}>Record your message</Link>}
             />
           ))}
         </div>
@@ -125,6 +125,43 @@ export function OrderView({ orderNumber }: { orderNumber: string }) {
           </div>
         </dl>
       </div>
+
+      {/*
+        Only when there is something real to show.
+
+        Shiprocket is not wired up, so these are empty on every order today. An
+        empty "Tracking" box with nothing in it is worse than no box at all —
+        it invites someone to check it repeatedly for information that was
+        never going to appear. And no delivery estimate is printed anywhere:
+        until a courier commits to a date, any number here is a promise we
+        cannot keep and a complaint we wrote ourselves.
+      */}
+      {(order.tracking.awb || order.tracking.trackingUrl) && (
+        <div className="rounded-[var(--radius-card)] border border-line p-4 text-sm">
+          <p className="flex items-center gap-2 font-medium text-ink">
+            <Truck className="size-4 text-brand" aria-hidden />
+            Tracking
+          </p>
+          {order.tracking.courierName && (
+            <p className="mt-2 text-muted">{order.tracking.courierName}</p>
+          )}
+          {order.tracking.awb && (
+            <p className="mt-1 font-mono text-muted">{order.tracking.awb}</p>
+          )}
+          {order.tracking.trackingUrl && (
+            <a
+              href={order.tracking.trackingUrl}
+              target="_blank"
+              // noopener because the courier's page gets a handle on this tab
+              // otherwise, and noreferrer so our order URL is not sent along.
+              rel="noopener noreferrer"
+              className="mt-2 inline-block text-brand underline-offset-4 hover:underline"
+            >
+              Track this parcel
+            </a>
+          )}
+        </div>
+      )}
 
       <div className="rounded-[var(--radius-card)] border border-line p-4 text-sm">
         <p className="flex items-center gap-2 font-medium text-ink">
