@@ -142,3 +142,33 @@ select:disabled,
 [role='button'][aria-disabled='true'] {
   cursor: not-allowed;
 }
+
+/*
+  Android Chrome paints a grey box over anything tapped. On a shop it reads as
+  a rendering fault, and it fires even when the tap does nothing at all.
+
+  ⚠️ Only safe because every control now carries an `active:` state of its own.
+  Removing the highlight without giving something back leaves a phone with no
+  feedback whatsoever — worse than the grey box it replaced. Most customers
+  here are on a phone, and none of them have a pointer.
+*/
+button,
+a,
+[role='button'],
+select,
+summary {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+  Movement only where there is a real pointer.
+  A touch screen has no way to un-hover: tapping a card leaves it stuck in its
+  hovered state until something else is tapped, so the picture stays enlarged
+  and looks broken. Colour changes are left alone — those settle back on their
+  own and are not worth the extra rule.
+*/
+@media (hover: none) {
+  .group:hover .group-hover\:scale-105 {
+    transform: none;
+  }
+}

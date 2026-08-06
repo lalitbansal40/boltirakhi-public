@@ -58,7 +58,7 @@ export function ProductFilters() {
         <select
           value={params.get('sort') ?? 'newest'}
           onChange={(event) => apply({ sort: event.target.value })}
-          className="rounded-md border border-line bg-surface px-3 py-1.5 text-sm"
+          className="min-h-11 rounded-md border border-line bg-surface px-3 py-1.5 text-sm transition-colors hover:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
         >
           {SORTS.map((sort) => (
             <option key={sort.value} value={sort.value}>
@@ -76,7 +76,7 @@ export function ProductFilters() {
             const [min, max] = event.target.value.split('-');
             apply({ minPrice: min || undefined, maxPrice: max || undefined });
           }}
-          className="rounded-md border border-line bg-surface px-3 py-1.5 text-sm"
+          className="min-h-11 rounded-md border border-line bg-surface px-3 py-1.5 text-sm transition-colors hover:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
         >
           {PRICE_BANDS.map((price) => (
             <option key={price.value} value={price.value}>

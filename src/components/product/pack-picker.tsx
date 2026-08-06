@@ -109,10 +109,10 @@ export function PackPicker({
                   disabled={!option.inStock}
                   aria-pressed={isSelected}
                   onClick={() => setPackSize(option.packSize)}
-                  className={`min-h-11 min-w-28 rounded-[var(--radius-input)] border px-3 py-2 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
+                  className={`min-h-11 min-w-28 rounded-[var(--radius-input)] border px-3 py-2 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 disabled:cursor-not-allowed disabled:opacity-50 ${
                     isSelected
                       ? 'border-brand bg-accent-soft/60'
-                      : 'border-line hover:border-brand'
+                      : 'border-line hover:border-brand active:scale-[0.98] disabled:hover:border-line'
                   }`}
                 >
                   <span className="block text-sm font-medium text-ink">

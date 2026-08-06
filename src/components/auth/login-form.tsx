@@ -143,7 +143,7 @@ export function LoginForm() {
           setStep('phone');
           setError(null);
         }}
-        className="flex min-h-11 items-center gap-1.5 text-sm text-muted hover:text-brand"
+        className="flex min-h-11 items-center gap-1.5 rounded-sm text-sm text-muted hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 active:opacity-70"
       >
         <ArrowLeft className="size-4" aria-hidden />
         Change number
@@ -175,7 +175,7 @@ export function LoginForm() {
           <button
             type="button"
             onClick={() => sendCode()}
-            className="min-h-11 text-brand underline-offset-4 hover:underline"
+            className="min-h-11 rounded-sm text-brand underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 active:opacity-70"
           >
             Resend code
           </button>

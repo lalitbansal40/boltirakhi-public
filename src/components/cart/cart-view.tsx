@@ -120,7 +120,7 @@ export function CartView({ categories }: { categories: Category[] }) {
                         Number(event.target.value),
                       )
                     }
-                    className="min-h-11 rounded-[var(--radius-input)] border border-line bg-surface px-2 text-sm text-ink"
+                    className="min-h-11 rounded-[var(--radius-input)] border border-line bg-surface px-2 text-sm text-ink transition-colors hover:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
                   >
                     {(line.availablePacks ?? [line.packSize ?? 1]).map((size) => (
                       <option key={size} value={size}>
@@ -164,7 +164,7 @@ export function CartView({ categories }: { categories: Category[] }) {
                   onClick={() => remove(line.productId, line.packSize ?? 1)}
                   // 44px minimum: this sits next to a stepper, and a mis-tap
                   // here deletes something.
-                  className="flex min-h-11 items-center gap-1.5 px-1 text-sm text-muted hover:text-destructive"
+                  className="flex min-h-11 items-center gap-1.5 rounded-sm px-1 text-sm text-muted hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 active:opacity-70"
                 >
                   <Trash2 className="size-4" aria-hidden />
                   Remove
@@ -246,7 +246,7 @@ export function CartView({ categories }: { categories: Category[] }) {
                     <button
                       type="button"
                       onClick={removeCoupon}
-                      className="min-h-11 px-1 text-muted hover:text-destructive"
+                      className="min-h-11 rounded-sm px-1 text-muted hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 active:opacity-70"
                     >
                       Remove
                     </button>
@@ -339,7 +339,10 @@ function QtyStepper({
         aria-label="Reduce quantity"
         disabled={disabled || qty <= 1}
         onClick={() => onChange(qty - 1)}
-        className="flex size-11 items-center justify-center text-ink disabled:opacity-40"
+        // `disabled:hover:bg-transparent` is not decoration: at a quantity of
+        // one the minus is disabled, and without it the button would still
+        // light up under the pointer — promising a press that does nothing.
+        className="flex size-11 items-center justify-center rounded-md text-ink transition-colors hover:bg-accent-soft active:bg-accent-soft/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 disabled:opacity-40 disabled:hover:bg-transparent"
       >
         <Minus className="size-4" aria-hidden />
       </button>
@@ -349,7 +352,10 @@ function QtyStepper({
         aria-label="Increase quantity"
         disabled={disabled || qty >= max}
         onClick={() => onChange(qty + 1)}
-        className="flex size-11 items-center justify-center text-ink disabled:opacity-40"
+        // `disabled:hover:bg-transparent` is not decoration: at a quantity of
+        // one the minus is disabled, and without it the button would still
+        // light up under the pointer — promising a press that does nothing.
+        className="flex size-11 items-center justify-center rounded-md text-ink transition-colors hover:bg-accent-soft active:bg-accent-soft/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 disabled:opacity-40 disabled:hover:bg-transparent"
       >
         <Plus className="size-4" aria-hidden />
       </button>

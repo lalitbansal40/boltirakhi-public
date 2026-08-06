@@ -51,7 +51,7 @@ export function LetterPicker({
           value={lang}
           // Only swaps which templates are offered. The textarea is untouched.
           onChange={(event) => setLang(event.target.value as LetterLang)}
-          className="min-h-11 rounded-md border border-line bg-surface px-2 text-sm text-ink outline-none focus:border-brand"
+          className="min-h-11 rounded-md border border-line bg-surface px-2 text-sm text-ink outline-none transition-colors hover:border-brand focus:border-brand focus-visible:ring-2 focus-visible:ring-brand/50"
         >
           {(Object.keys(LANG_LABELS) as LetterLang[]).map((code) => (
             <option key={code} value={code}>

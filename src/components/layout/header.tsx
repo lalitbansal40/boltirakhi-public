@@ -54,7 +54,7 @@ export function Header({ categories }: { categories: Category[] }) {
 
         <Link
           href="/"
-          className="font-heading text-xl font-bold text-brand sm:text-2xl"
+          className="rounded-sm font-heading text-xl font-bold text-brand transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 active:opacity-70 sm:text-2xl"
         >
           Bolti Rakhi
         </Link>
@@ -99,7 +99,7 @@ export function Header({ categories }: { categories: Category[] }) {
             aria-label="Search"
             aria-expanded={searchOpen}
             onClick={() => setSearchOpen((open) => !open)}
-            className="rounded-md p-2 text-ink hover:bg-accent-soft md:hidden"
+            className="rounded-md p-2 text-ink transition-colors hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 active:bg-accent-soft/70 md:hidden"
           >
             <Search className="size-5" aria-hidden />
           </button>

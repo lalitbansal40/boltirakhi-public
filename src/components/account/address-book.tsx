@@ -124,7 +124,7 @@ export function AddressBook() {
                   type="button"
                   onClick={() => makeDefault(address)}
                   disabled={busyId === address.id}
-                  className="min-h-11 px-1 text-sm text-brand hover:underline disabled:opacity-50"
+                  className="min-h-11 rounded-sm px-1 text-sm text-brand hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 active:opacity-70 disabled:opacity-50"
                 >
                   Make default
                 </button>
@@ -135,7 +135,7 @@ export function AddressBook() {
                 disabled={busyId === address.id}
                 // 44px, and it sits beside another action that does not delete
                 // anything.
-                className="flex min-h-11 items-center gap-1.5 px-1 text-sm text-muted hover:text-destructive disabled:opacity-50"
+                className="flex min-h-11 items-center gap-1.5 rounded-sm px-1 text-sm text-muted hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 active:opacity-70 disabled:opacity-50"
               >
                 <Trash2 className="size-4" aria-hidden />
                 Delete

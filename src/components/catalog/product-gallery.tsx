@@ -70,9 +70,18 @@ export function ProductGallery({
               type="button"
               onClick={() => setActive(index)}
               aria-label={slide.kind === 'video' ? 'Play video' : `Image ${index + 1}`}
+              aria-current={index === active}
+              /*
+                The selected one was marked, but the one under the pointer said
+                nothing. With nine to twelve photographs on every product now,
+                a row of identical squares that never reacts is hard to work
+                through — the hint matters more than it did at five.
+              */
               className={cn(
-                'relative size-16 overflow-hidden rounded-md border bg-accent-soft/30',
-                index === active ? 'border-brand' : 'border-line',
+                'relative size-16 overflow-hidden rounded-md border bg-accent-soft/30 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50',
+                index === active
+                  ? 'border-brand'
+                  : 'border-line hover:border-brand/50 active:scale-95',
               )}
             >
               {slide.kind === 'video' ? (

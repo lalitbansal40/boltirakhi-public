@@ -23,7 +23,7 @@ export function MobileNav({ categories }: { categories: Category[] }) {
           <button
             type="button"
             aria-label="Open menu"
-            className="rounded-md p-2 text-ink hover:bg-accent-soft lg:hidden"
+            className="rounded-md p-2 text-ink transition-colors hover:bg-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 active:bg-accent-soft/70 lg:hidden"
           >
             <Menu className="size-5" aria-hidden />
           </button>

@@ -91,7 +91,17 @@ export function RevealView({ token }: { token: string }) {
             <button
               type="button"
               onClick={() => setPlaying(true)}
-              className="relative flex aspect-[3/4] w-full items-center justify-center sm:aspect-video"
+              /*
+                The one button that matters most in the whole shop.
+                He has scanned a QR code on a rakhi and landed here, and there
+                is exactly one thing to do. It carried no hover, no press, and
+                no pointer at all — nothing said it could be touched.
+
+                `group-active` counts for more than `group-hover` here: this
+                page is reached by scanning a code, so it is opened on a phone
+                almost every time, and a phone has no hover.
+              */
+              className="group relative flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-[var(--radius-card)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 sm:aspect-video"
             >
               {data.videoThumbUrl && (
                 <Image
@@ -102,11 +112,11 @@ export function RevealView({ token }: { token: string }) {
                   // one on a laptop. Without this the browser fetches the
                   // largest size for both.
                   sizes="(min-width: 640px) 640px, 100vw"
-                  className="object-cover opacity-70"
+                  className="object-cover opacity-70 transition-opacity duration-200 group-hover:opacity-60"
                   unoptimized
                 />
               )}
-              <span className="relative flex size-16 items-center justify-center rounded-full bg-white/90">
+              <span className="relative flex size-16 items-center justify-center rounded-full bg-white/90 shadow-lg transition-transform duration-200 group-hover:scale-110 group-active:scale-95">
                 <Play className="ml-1 size-7 fill-brand text-brand" aria-hidden />
               </span>
               <span className="sr-only">Play the video message</span>

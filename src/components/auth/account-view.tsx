@@ -103,7 +103,7 @@ export function AccountView() {
                 setNameDraft(user?.name ?? '');
                 setEditing(true);
               }}
-              className="flex min-h-11 items-center gap-1.5 px-1 text-sm text-brand hover:underline"
+              className="flex min-h-11 items-center gap-1.5 rounded-sm px-1 text-sm text-brand hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 active:opacity-70"
             >
               <Pencil className="size-4" aria-hidden />
               Edit
