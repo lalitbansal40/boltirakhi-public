@@ -112,3 +112,33 @@ h3 {
   animation-iteration-count: infinite;
   will-change: transform;
 }
+
+/*
+  Tailwind v4 dropped Preflight's `button { cursor: pointer }` — checked in
+  node_modules/tailwindcss/preflight.css, where the only cursor rule left is
+  the Safari spin-button correction. Every button on the shop was showing an
+  arrow: Add to cart, Pay now, Remove, the quantity steppers, the pack
+  buttons, the gallery thumbnails.
+
+  Restored here rather than on the Button component. Fifteen buttons in this
+  codebase are hand-written and never touch that component, and they are the
+  ones that matter most — Remove, and the + and − in the cart. A class on the
+  component would have fixed only the buttons that were already fine.
+*/
+button:not(:disabled),
+[role='button']:not(:disabled),
+label[for],
+select:not(:disabled),
+summary {
+  cursor: pointer;
+}
+
+/*
+  A disabled control still says "I am a button, but not now". Left as an arrow
+  it says "there is nothing here", and the customer presses it twice.
+*/
+button:disabled,
+select:disabled,
+[role='button'][aria-disabled='true'] {
+  cursor: not-allowed;
+}
