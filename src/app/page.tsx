@@ -5,6 +5,7 @@ import {
   ProductSection,
   TrustBar,
 } from '@/components/home/sections';
+import { LEGAL_NAME, SUPPORT_EMAIL, SUPPORT_PHONE_DISPLAY } from '@/lib/business';
 import { getCategories, getProducts } from '@/lib/catalog';
 
 /**
@@ -45,8 +46,49 @@ export default async function Page() {
   const featuredSlugs = new Set((featured?.items ?? []).map((p) => p.slug));
   const secondItems = (secondRow?.items ?? []).filter((p) => !featuredSlugs.has(p.slug));
 
+  /**
+   * Who this shop is, in the one place Google looks for it.
+   *
+   * The home page carried no structured data at all, which left "Bolti Rakhi"
+   * as two ordinary words rather than the name of a business. Someone who sees
+   * an advert and then searches the name should find the shop, with its logo
+   * and its phone number, and not have to work out which result is us.
+   */
+  const orgJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'OnlineStore',
+    name: LEGAL_NAME,
+    url: 'https://boltirakhi.com',
+    logo: 'https://boltirakhi.com/brand/logo-mark.svg',
+    description:
+      'Rakhis that carry a recorded video message. We print a QR code on the packaging, and your brother watches it when he opens the box.',
+    telephone: SUPPORT_PHONE_DISPLAY,
+    email: SUPPORT_EMAIL,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '201, Punam Vihar, Jagatpura',
+      addressLocality: 'Jaipur',
+      postalCode: '302017',
+      addressRegion: 'Rajasthan',
+      addressCountry: 'IN',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      telephone: SUPPORT_PHONE_DISPLAY,
+      email: SUPPORT_EMAIL,
+      availableLanguage: ['en', 'hi'],
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        // Built from our own constants — nothing here is user-supplied.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+      />
+
       <Hero featuredCategory={second} />
 
       {/*

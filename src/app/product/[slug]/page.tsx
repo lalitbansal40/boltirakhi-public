@@ -7,6 +7,7 @@ import { Suspense } from 'react';
 import { ProductGallery } from '@/components/catalog/product-gallery';
 import { Badge } from '@/components/ui/badge';
 import { PackPicker, PackPickerSkeleton } from '@/components/product/pack-picker';
+import { LEGAL_NAME } from '@/lib/business';
 import { getProduct } from '@/lib/catalog';
 import { formatPaise } from '@/lib/money';
 
@@ -56,15 +57,66 @@ export default async function Page({ params }: { params: Params }) {
     name: product.title,
     description: product.shortDescription ?? product.description,
     image: product.images.map((image) => image.url),
+    // Matches g:brand and g:id in the Merchant Center feed. Google compares the
+    // feed against this markup, and a disagreement is a disapproved item.
+    brand: { '@type': 'Brand', name: 'Bolti Rakhi' },
+    sku: product.slug,
     offers: {
       '@type': 'Offer',
       priceCurrency: 'INR',
       price: (product.pricePaise / 100).toFixed(2),
+      /**
+       * Without this Google treats the price as valid forever and eventually
+       * reports the offer as stale. Six months out, refreshed on every render,
+       * so it never actually arrives.
+       */
+      priceValidUntil: new Date(Date.now() + 182 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .slice(0, 10),
       availability: product.inStock
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition',
       url: `https://boltirakhi.com/product/${product.slug}`,
+      seller: { '@type': 'Organization', name: LEGAL_NAME },
     },
+  };
+
+  /**
+   * The trail Google prints under the link, in place of a bare URL.
+   *
+   * Kept separate from the product markup rather than nested inside it —
+   * they are two different things Google reads, and one malformed field in a
+   * combined blob invalidates both.
+   */
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://boltirakhi.com' },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'All rakhis',
+        item: 'https://boltirakhi.com/rakhi',
+      },
+      ...(category
+        ? [
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: category.name,
+              item: `https://boltirakhi.com/rakhi/${category.slug}`,
+            },
+          ]
+        : []),
+      {
+        '@type': 'ListItem',
+        position: category ? 4 : 3,
+        name: product.title,
+        item: `https://boltirakhi.com/product/${product.slug}`,
+      },
+    ],
   };
 
   return (
@@ -74,6 +126,10 @@ export default async function Page({ params }: { params: Params }) {
         // The object is built here from our own data, so there is nothing
         // user-supplied to escape.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <div className="grid gap-8 lg:grid-cols-2">
